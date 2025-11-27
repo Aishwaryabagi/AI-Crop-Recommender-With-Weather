@@ -4,9 +4,7 @@ AI-powered crop recommendation, real-time weather insights, and an interactive f
 
 🔗 🌐 Live Demo (Hosted on Vercel)
 
-👉 https://your-vercel-url.vercel.app/
-
-((https://ai-argi.vercel.app/))
+👉[ https://your-vercel-url.vercel.app/](https://ai-argi.vercel.app/)
 
 🚀 Overview
 
