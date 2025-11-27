@@ -6,7 +6,7 @@ AI-powered crop recommendation, real-time weather insights, and an interactive f
 
 👉 https://your-vercel-url.vercel.app/
 
-([Replace with your actual Vercel URL](https://ai-argi.vercel.app/))
+((https://ai-argi.vercel.app/))
 
 🚀 Overview
 
