@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Result - AgriAI</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            font-size: 2rem;
+            margin-bottom: 30px;
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .result-label {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .crop-name {
+            font-size: 3rem;
+            font-weight: bold;
+            text-transform: capitalize;
+            margin: 10px 0;
+            animation: bounceIn 0.6s ease-out;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .weather-card {
+            background: #e3f2fd;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .weather-card h3 {
+            color: #1976d2;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .weather-info {
+            display: flex;
+            justify-content: space-around;
+            gap: 15px;
+        }
+
+        .weather-item {
+            text-align: center;
+            flex: 1;
+        }
+
+        .weather-icon {
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+        }
+
+        .weather-label {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .weather-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #1976d2;
+        }
+
+        .alert {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            color: #856404;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .alert.error {
+            background: #f8d7da;
+            border-left-color: #dc3545;
+            color: #721c24;
+        }
+
+        .btn-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 35px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .crop-name {
+                font-size: 2.2rem;
+            }
+
+            .weather-info {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🌾 Crop Prediction Result</h1>
+
+        <!-- CROP RESULT -->
+        <div class="result-card">
+            <div class="result-label">Recommended Crop for Your Field:</div>
+            <div class="crop-name">{{ crop }}</div>
+        </div>
+
+        <!-- WEATHER RESULT -->
+        {% if weather %}
+            {% if weather.error %}
+                <div class="alert error">
+                    ❌ {{ weather.error }}
+                </div>
+            {% else %}
+                <div class="weather-card">
+                    <h3>🌦 Weather in {{ city }}</h3>
+                    <div class="weather-info">
+                        <div class="weather-item">
+                            <div class="weather-icon">🌡️</div>
+                            <div class="weather-label">Temperature</div>
+                            <div class="weather-value">{{ weather.temperature }}°C</div>
+                        </div>
+                        <div class="weather-item">
+                            <div class="weather-icon">💧</div>
+                            <div class="weather-label">Humidity</div>
+                            <div class="weather-value">{{ weather.humidity }}%</div>
+                        </div>
+                        <div class="weather-item">
+                            <div class="weather-icon">🌥️</div>
+                            <div class="weather-label">Condition</div>
+                            <div class="weather-value">{{ weather.description }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- WEATHER ADVICE -->
+                {% if weather.rain %}
+                    <div class="alert">
+                        🌧️ Rain expected — Consider postponing irrigation.
+                    </div>
+                {% else %}
+                    <div class="alert">
+                        ☀️ Clear conditions — Good time for field work.
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+
+        <!-- BACK BUTTON -->
+        <div class="btn-container">
+            <a href="/" class="btn">← Make Another Prediction</a>
+        </div>
+    </div>
+</body>
+</html>

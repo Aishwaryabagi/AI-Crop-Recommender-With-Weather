@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriAI - Precision Agriculture Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow-x: hidden;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        .hero {
+            padding: 150px 5% 80px;
+            text-align: center;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            animation: fadeInUp 0.8s ease-out 0.2s backwards;
+        }
+
+        .cta-button {
+            background: white;
+            color: #667eea;
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            animation: fadeInUp 0.8s ease-out 0.4s backwards;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .features {
+            background: white;
+            padding: 80px 5%;
+        }
+
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #333;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 2rem;
+            border-radius: 15px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .feature-card p {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .prediction-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 80px 5%;
+        }
+
+        .prediction-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .prediction-intro {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+        }
+
+        .prediction-intro h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .prediction-intro p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+        }
+
+        .form-container {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-size: 0.95rem;
+        }
+
+        input[type="number"] {
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        input[type="submit"] {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        input[type="submit"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .footer {
+            background: #2d3748;
+            color: white;
+            padding: 3rem 5%;
+            text-align: center;
+        }
+
+        .footer p {
+            opacity: 0.8;
+        }
+
+        /* Chatbot Styles */
+        .chatbot-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            z-index: 999;
+        }
+
+        .chatbot-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(102, 126, 234, 0.6);
+        }
+
+        .chat-icon {
+            font-size: 2rem;
+        }
+
+        .chatbot-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 380px;
+            height: 500px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            display: none;
+            flex-direction: column;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .chatbot-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chatbot-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .chatbot-icon {
+            font-size: 1.5rem;
+        }
+
+        .chatbot-minimize {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+
+        .chatbot-minimize:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .chatbot-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+            background: #f8f9fa;
+        }
+
+        .bot-message, .user-message {
+            margin-bottom: 1rem;
+            padding: 0.8rem 1rem;
+            border-radius: 12px;
+            line-height: 1.5;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .bot-message {
+            background: white;
+            border: 1px solid #e0e0e0;
+        }
+
+        .user-message {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin-left: 2rem;
+        }
+
+        .chatbot-input-container {
+            display: flex;
+            padding: 1rem;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+            gap: 0.5rem;
+        }
+
+        #chatInput {
+            flex: 1;
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        #chatInput:focus {
+            border-color: #667eea;
+        }
+
+        #sendBtn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.3s;
+        }
+
+        #sendBtn:hover {
+            transform: scale(1.05);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .chatbot-container {
+                width: 90%;
+                right: 5%;
+                bottom: 20px;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .form-container {
+                padding: 2rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-content">
+            <div class="logo">🌾 AgriAI</div>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#predict">Predict</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>AI-Powered Precision Agriculture</h1>
+        <p>Revolutionize your farming with intelligent crop predictions and data-driven insights</p>
+        <a href="#predict" class="cta-button">Start Predicting</a>
+    </section>
+
+    <section class="features" id="features">
+        <div class="features-container">
+            <h2 class="section-title">Why Choose AgriAI?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Precise Predictions</h3>
+                    <p>Advanced machine learning algorithms analyze soil nutrients, climate data, and environmental factors to recommend optimal crops for your land.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Data-Driven Insights</h3>
+                    <p>Make informed decisions based on comprehensive analysis of nitrogen, phosphorous, potassium levels, temperature, humidity, pH, and rainfall patterns.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌱</div>
+                    <h3>Maximize Yield</h3>
+                    <p>Optimize your agricultural productivity by planting the right crops in the right conditions, reducing waste and increasing profitability.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Instant Results</h3>
+                    <p>Get immediate crop recommendations powered by AI, helping you plan your farming strategy efficiently and effectively.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌍</div>
+                    <h3>Sustainable Farming</h3>
+                    <p>Promote environmental sustainability by matching crops to natural soil conditions, reducing the need for excessive fertilizers and interventions.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💰</div>
+                    <h3>Cost Effective</h3>
+                    <p>Save money and resources by avoiding crop failures and optimizing your agricultural investments with predictive intelligence.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="prediction-section" id="predict">
+        <div class="prediction-container">
+            <div class="prediction-intro">
+                <h2>AI-Powered Crop Prediction</h2>
+                <p>Enter your soil and environmental data to get instant crop recommendations</p>
+            </div>
+            <div class="form-container">
+                <form action="/predict" method="post">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="nitrogen">Nitrogen Level (N)</label>
+                            <input type="number" step="0.1" id="nitrogen" name="nitrogen" required placeholder="0-140">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phosphorous">Phosphorous Level (P)</label>
+                            <input type="number" step="0.1" id="phosphorous" name="phosphorous" required placeholder="0-145">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="potassium">Potassium Level (K)</label>
+                            <input type="number" step="0.1" id="potassium" name="potassium" required placeholder="0-205">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="temperature">Temperature (°C)</label>
+                            <input type="number" step="0.1" id="temperature" name="temperature" required placeholder="0-43">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="humidity">Humidity (%)</label>
+                            <input type="number" step="0.1" id="humidity" name="humidity" required placeholder="15-99">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ph">pH Level</label>
+                            <input type="number" step="0.1" id="ph" name="ph" required placeholder="3.5-9.9">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="rainfall">Rainfall (mm)</label>
+                            <input type="number" step="0.1" id="rainfall" name="rainfall" required placeholder="20-298">
+                        </div>
+                        <div class="form-group">
+                            <label for = "City"> Enter city</label>
+                            <input type="text" step="0.1" name="city" placeholder="Bangalore" required><br>
+                        </div>
+                        
+                    </div>
+
+                    <input type="submit" value="Predict Optimal Crop">
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer" id="contact">
+        <p>&copy; 2024 AgriAI - AI-Powered Precision Agriculture Platform. All rights reserved.</p>
+        <p style="margin-top: 1rem; font-size: 0.9rem;">Empowering farmers with intelligent decision-making tools</p>
+    </footer>
+
+    <!-- Chatbot Widget -->
+    <div class="chatbot-container" id="chatbot">
+        <div class="chatbot-header" id="chatbotHeader">
+            <div class="chatbot-title">
+                <span class="chatbot-icon">🤖</span>
+                <span>AgriAI Assistant</span>
+            </div>
+            <button class="chatbot-minimize" id="minimizeBtn">−</button>
+        </div>
+        <div class="chatbot-messages" id="chatMessages">
+            <div class="bot-message">
+                <strong>AgriAI Assistant:</strong> Hello! I'm here to help you with crop predictions, soil analysis, and farming advice. How can I assist you today?
+            </div>
+        </div>
+        <div class="chatbot-input-container">
+            <input type="text" id="chatInput" placeholder="Ask me anything about farming..." />
+            <button id="sendBtn">Send</button>
+        </div>
+    </div>
+
+    <button class="chatbot-toggle" id="chatbotToggle">
+        <span class="chat-icon">💬</span>
+    </button>
+
+    <script>
+        const chatbot = document.getElementById('chatbot');
+        const chatbotToggle = document.getElementById('chatbotToggle');
+        const minimizeBtn = document.getElementById('minimizeBtn');
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+        const sendBtn = document.getElementById('sendBtn');
+
+        let isOpen = false;
+
+        chatbotToggle.addEventListener('click', () => {
+            isOpen = !isOpen;
+            chatbot.style.display = isOpen ? 'flex' : 'none';
+            chatbotToggle.style.display = isOpen ? 'none' : 'flex';
+        });
+
+        minimizeBtn.addEventListener('click', () => {
+            isOpen = false;
+            chatbot.style.display = 'none';
+            chatbotToggle.style.display = 'flex';
+        });
+
+        function addMessage(message, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = isUser ? 'user-message' : 'bot-message';
+            messageDiv.innerHTML = isUser ? `<strong>You:</strong> ${message}` : `<strong>AgriAI Assistant:</strong> ${message}`;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function getBotResponse(userMessage) {
+            const msg = userMessage.toLowerCase();
+            
+            if (msg.includes('nitrogen') || msg.includes('n level')) {
+                return "Nitrogen (N) is essential for plant growth and leaf development. Optimal levels vary by crop, but generally range from 0-140. High nitrogen promotes leafy growth, while low nitrogen can cause yellowing leaves.";
+            } else if (msg.includes('phosphorous') || msg.includes('phosphorus') || msg.includes('p level')) {
+                return "Phosphorous (P) supports root development and flowering. Levels typically range from 0-145. It's crucial for energy transfer in plants and helps with fruit and seed production.";
+            } else if (msg.includes('potassium') || msg.includes('k level')) {
+                return "Potassium (K) strengthens plant immunity and regulates water uptake. Normal range is 0-205. It improves drought resistance and overall plant health.";
+            } else if (msg.includes('ph') || msg.includes('acidity')) {
+                return "Soil pH affects nutrient availability. Most crops prefer pH 6.0-7.5. Values range from 3.5-9.9. Acidic soils (<6) may need lime, while alkaline soils (>8) may need sulfur.";
+            } else if (msg.includes('temperature') || msg.includes('temp')) {
+                return "Temperature affects crop growth rates and development. Different crops have different optimal temperature ranges (0-43°C in our system). Cool-season crops prefer 15-20°C, while warm-season crops thrive at 21-30°C.";
+            } else if (msg.includes('humidity')) {
+                return "Humidity influences disease pressure and water stress. Range is 15-99%. High humidity (>70%) can promote fungal diseases, while low humidity (<40%) may stress plants.";
+            } else if (msg.includes('rainfall') || msg.includes('rain')) {
+                return "Rainfall amount is crucial for crop selection. Our system considers 20-298mm. Drought-resistant crops need less water, while rice and similar crops require consistent moisture.";
+            } else if (msg.includes('predict') || msg.includes('recommendation')) {
+                return "To get crop predictions, fill out the form above with your soil and environmental data. Our AI will analyze nitrogen, phosphorous, potassium, temperature, humidity, pH, and rainfall to recommend the best crops for your conditions!";
+            } else if (msg.includes('hello') || msg.includes('hi') || msg.includes('hey')) {
+                return "Hello! I'm here to help with your agricultural questions. Ask me about soil nutrients, environmental factors, or how to use our prediction system.";
+            } else if (msg.includes('help')) {
+                return "I can help you with: understanding soil nutrients (N, P, K), pH levels, climate factors, crop selection, and how to use our prediction tool. What would you like to know?";
+            } else if (msg.includes('thanks') || msg.includes('thank you')) {
+                return "You're welcome! Feel free to ask if you have more questions about farming or our platform. Happy farming! 🌾";
+            } else {
+                return "I'm here to help with agricultural questions! You can ask me about soil nutrients, pH levels, temperature, humidity, rainfall, or how to get crop predictions. What would you like to know?";
+            }
+        }
+
+        function sendMessage() {
+            const message = chatInput.value.trim();
+            if (message) {
+                addMessage(message, true);
+                chatInput.value = '';
+                
+                setTimeout(() => {
+                    const response = getBotResponse(message);
+                    addMessage(response);
+                }, 500);
+            }
+        }
+
+        sendBtn.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>
